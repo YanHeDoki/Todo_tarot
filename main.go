@@ -2,10 +2,10 @@ package main
 
 import (
 	"github.com/flopp/go-findfont"
-	"github.com/goki/freetype/truetype"
 	"newTarot/fyneGui"
 	"newTarot/tarot"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -14,21 +14,19 @@ func main() {
 	tarot.JsonToMap()
 
 	fyneGui.GuiStart()
+
+	os.Unsetenv("FYNE_FONT")
 }
 
 func init() {
-	fontPath, err := findfont.Find("/FontLibrary/simhei.ttf")
-	if err != nil {
-		panic(err)
+
+	fontPaths := findfont.List()
+
+	for _, path := range fontPaths {
+		if strings.Contains(path, "simkai.ttf") || strings.Contains(path, "simkai.ttc") {
+			os.Setenv("FYNE_FONT", path)
+			break
+		}
 	}
 
-	fontData, err := os.ReadFile(fontPath)
-	if err != nil {
-		panic(err)
-	}
-	_, err = truetype.Parse(fontData)
-	if err != nil {
-		panic(err)
-	}
-	os.Setenv("FYNE_FONT", fontPath)
 }
