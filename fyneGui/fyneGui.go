@@ -206,7 +206,7 @@ func start(f binding.Float) {
 
 			f.Set(num)
 
-			if num <= 0.0 {
+			if num <= 0.0 && Once == 1 {
 				Notify()
 				Once = 0
 			}
